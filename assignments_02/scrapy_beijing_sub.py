@@ -25,18 +25,21 @@ def get_one_page(url):
        return None
 
 
-def get_one_parse(url):
-    
-    print(get_one_page(url))
+def get_sub_parse(url):
+   
     html = str(get_one_page(url).decode("utf-8"))
     pattern_url = re.compile(r'target=_blank href="(.*?)"')
     url_sub = re.findall(pattern_url, html)
     url_cn = [parse.unquote(url) for url in url_sub ]
     url_cn_rm = list(set([url for url in url_cn if '线' in url]))
+    sub_cn = list(set([re.findall(r'item/(.*?线)',i)[0] for i in url_cn_rm]))
     return url_cn_rm
 
-def write(sub):
 
+def get_station_parse(url):
+    html = 
+    
+    
 def read_ip():
     with open(r'.\ip.txt','r') as f:
        lines = f.readlines()
