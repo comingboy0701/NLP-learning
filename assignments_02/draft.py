@@ -7,11 +7,12 @@ Created on Thu Jul 18 12:31:25 2019
 from collections import defaultdict
 import networkx as nx
 import matplotlib.pyplot as plt
+import math
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 
-with open('station_1.csv','r') as f:
+with open('station_2.csv','r') as f:
     location_cn = f.readlines()
     sub_stations = {}
     for sub in location_cn:
@@ -43,16 +44,89 @@ with open('station_lati_1.csv','r') as f:
         stations_location[station_cn] = lati
         print(station_cn,lati)
 
-cities = list(stations_location.keys())
-city_graph = nx.Graph()
-city_graph.add_nodes_from(cities)
+
 plt.figure(1)
-nx.draw(city_graph, stations_location, with_labels=False, node_size=10)
+
+stations_new = {}
+for key, value in station_connection.items():
+    stations_new[key] = stations_location[key]
+cities = list(stations_new.keys())
+city_graph = nx.Graph()
+city_graph.add_nodes_from(cities)   
+nx.draw(city_graph, stations_new, with_labels=False, node_size=10)
+
 
 station_connection_graph = nx.Graph(station_connection)
 
 plt.figure(2)
-nx.draw(station_connection_graph, stations_location, with_labels=False, node_size=10)
+nx.draw(station_connection_graph, with_labels=False, node_size=10)
+
+
+def geo_distance(origin, destination):
+   
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    radius = 6371  # km
+
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) * math.sin(dlat / 2) +
+         math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
+         math.sin(dlon / 2) * math.sin(dlon / 2))
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    d = radius * c
+
+    return d
+
+def get_station_distance(station1, station2):
+    return geo_distance(stations_location[station1], stations_location[station2])
+
+
+
+
+def search (station1,station2,connnection_grpah,sort_candidate):
+    pathes = [[station1]]
+    vistied = set()
+    while pathes:
+        path = pathes.pop(0)
+        froninter = path[-1]
+        if froninter in vistied: continue
+        successors = connnection_grpah[froninter]
+        for station in successors:
+            if station in path:continue
+            new_path = path + [station]
+            pathes.append(new_path)
+            if station == station2: return new_path
+        pathes = sort_candidate(pathes)
+        vistied.add(froninter)       
+        
+
+def pretty_print(stations):
+    print('>>'.join(stations))
+    
+def transfer_station_first(pathes):
+    return sorted(pathes,key= len)
+
+
+def get_path_distance(path):
+    distance = 0
+    for index,station in enumerate(path[:-1]):
+        distance +=get_station_distance(station,path[index+1])
+    return distance
+
+def shortest_path_first(pathes):
+    return sorted(pathes,key = get_path_distance)        
+
+station1 = '天安门西站'
+station2 = '奥体中心站'
+# 最少换乘
+stations = search(station1,station2,station_connection,sort_candidate=transfer_station_first)
+print(pretty_print(stations))
+# 最短距离
+stations = search(station1,station2,station_connection,sort_candidate=shortest_path_first)
+print(pretty_print(stations))
+
+
 
 def is_goal(desitination):
     def _wrap(current_path):
