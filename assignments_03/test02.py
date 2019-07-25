@@ -46,33 +46,40 @@ for i, p in enumerate(original_price):
 
 
 call_time_with_arg = defaultdict(int)
-cache = {}
+
 
 def memo(f):
+    memo.cache = {}
+
     def _wrap(arg):
-        if arg in cache:
-            return cache[arg]
+        if arg in memo.cache:
+            return memo.cache[arg]
         else:
-            cache[arg] = f(arg)
+            memo.cache[arg] = f(arg)
             # call_time_with_arg[(f.__name__, arg)] += 1
-            return cache[arg]
+            return memo.cache[arg]
     return _wrap
+
+
 solution = {}
+
 
 @get_call_time
 @memo
 def r(n):
-    max_price, max_split = max([(price[n],0)] + [(r(i) + r(n - i),i) for i in range(1, n)], key = lambda x : x[0])
-    solution[n] = (n- max_split,max_split)
+    max_price, max_split = max([(price[n], 0)] + [(r(i) + r(n - i), i)
+                                                  for i in range(1, n)], key=lambda x: x[0])
+    solution[n] = (n - max_split, max_split)
     return max_price
 
+
 def parse_solution(n):
-    left_split,right_split = solution[n]
-    if right_split ==0 : return [left_split]
-    return parse_solution(left_split)+parse_solution(right_split)
+    left_split, right_split = solution[n]
+    if right_split == 0:
+        return [left_split]
+    return parse_solution(left_split) + parse_solution(right_split)
 
-parse_solution(100)
-
-r(100)
 
 Counter(call_time_with_arg).most_common()
+r(50)
+parse_solution(50)
