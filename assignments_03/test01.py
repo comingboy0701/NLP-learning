@@ -10,6 +10,7 @@ from sklearn.datasets import load_boston
 import matplotlib.pyplot as plt
 import random
 
+
 data = load_boston()
 X, y = data['data'], data['target']
 X_rm = X[:, 5]
@@ -45,7 +46,6 @@ def partial_b(x, y, y_hat):
     return -2 / n * gradient
 
 
-
 trying_times = 2000
 X, y = data['data'], data['target']
 min_loss = float('inf')
@@ -71,4 +71,5 @@ for i in range(trying_times):
     current_b = current_b + (-1 * b_gradient) * learning_rate
 
 # 2. 动态规划
+
 
