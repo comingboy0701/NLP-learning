@@ -10,7 +10,7 @@ from lxml import etree
 import time 
 
 def get_loction(address):
-    address = '北京地铁亦庄线万源街站'
+#    address = '北京地铁亦庄线万源街站'
     key = '76ca4ffd4960f784b41d5580e1680f52'
     url = 'https://restapi.amap.com/v3/geocode/geo?address={0}&output=XML&key={1}'.format(address,key)
     try:

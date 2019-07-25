@@ -82,8 +82,6 @@ def get_station_distance(station1, station2):
     return geo_distance(stations_location[station1], stations_location[station2])
 
 
-
-
 def search (station1,station2,connnection_grpah,sort_candidate):
     pathes = [[station1]]
     vistied = set()

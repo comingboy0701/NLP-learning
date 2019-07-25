@@ -19,8 +19,6 @@ def bfs(graph, start):
         seen.add(froninter)
     return seen
 
-
-
 def dfs(graph, start):
     visited = [start]
     seen = set()
@@ -46,7 +44,9 @@ graph = {0:[1,2],
 simple_connection_info= defaultdict(list)
 simple_connection_info.update(graph)
 
-
 visted = bfs(simple_connection_info, 0)
 
 visted = dfs(simple_connection_info, 0)
+
+
+
