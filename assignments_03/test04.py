@@ -16,6 +16,13 @@ longitude = [random.randint(-100, 100) for _ in range(10)]
 for k ,la_lg in enumerate(zip(latitudes,longitude)):
     points[k] = la_lg
 
+
+
+def points_distance(points):
+
+
+
+
 x_1,y_1 = points[5]
 
 plt.plot(latitudes, longitude,'bo')
@@ -27,7 +34,8 @@ def distance(point_1,point_2):
     x_2, y_2 = point_2
     return math.sqrt((x_1-x_2)^2+(y_1-y_2)^2)
 
-target()
+def search(start, is_goal):
+    distance(point_1, point_2)
 
 
 dis = distance(points[0],points[1])
