@@ -7,15 +7,18 @@ Created on Mon Jul 29 14:07:06 2019
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
+
 def tsne_plot(model):
     "Creates and TSNE model and plots it"
     labels = []
     tokens = []
-
-    for word in model.wv.vocab[:100]: # fig first 100
+    size = 0
+    for word in model.wv.vocab: # fig first 100
+        if size >=300:
+            break
         tokens.append(model[word])
         labels.append(word)
-    
+        size +=1
     # PCA 2 main
     tsne_model = TSNE(perplexity=40, n_components=2, init='pca', n_iter=2500, random_state=23)
     new_values = tsne_model.fit_transform(tokens)

@@ -8,6 +8,7 @@ Created on Mon Jul 29 20:33:51 2019
 from gensim.models import word2vec
 import os
 
+
 root = os.path.dirname(os.path.abspath(__file__))
 os.chdir(root)
 
