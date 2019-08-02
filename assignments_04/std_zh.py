@@ -36,13 +36,11 @@ plt.rcParams['axes.unicode_minus'] = False
 #model.save('WikiCHModel03')
 
 
-model = word2vec.Word2Vec.load('WikiCHModel02')
+model = word2vec.Word2Vec.load('WikiCHModel03')
 print(model.wv.similarity('奥运会','金牌')) #两个词的相关性
 print(model.wv.most_similar(['伦敦','中国'],['北京'])) # 北京is to中国 as 伦敦is to？
 #
-#
 from fig_model import tsne_plot
-
 
 tsne_plot(model)
 
